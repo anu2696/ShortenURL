@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dao.entity.UrlShortener;
 import com.example.demo.dao.repository.UrlShortnerRepo;
+import com.example.demo.model.UrlShortnerRequest;
 import com.example.demo.model.UrlShortnerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,15 @@ public class UrlShortnerService {
 
         }
         return resResponse;
+    }
+
+    public UrlShortnerRequest getLongURLService(String shortURL){
+       // UrlShortener urlShortner= urlShortnerRepo.findTopByOrderByIdDesc();
+        UrlShortener urlShortner= urlShortnerRepo.findByShortURL(shortURL);
+        UrlShortnerRequest resRequest= new UrlShortnerRequest();
+        String longURL = urlShortner.getLongUrl();
+        resRequest.setLongURL(longURL);
+        return resRequest;
     }
 
     private String translateCode(String code){

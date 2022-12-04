@@ -9,4 +9,6 @@ public interface UrlShortnerRepo extends CrudRepository<UrlShortener, Long> {
 
     public UrlShortener findTopByOrderByIdDesc();
     public UrlShortener save(UrlShortener urlShortener);
+
+    public UrlShortener findByShortURL(String shortUrl);
 }
