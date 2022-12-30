@@ -18,31 +18,51 @@ public class UrlShortnerService {
     UrlShortnerRepo urlShortnerRepo;
 
     public UrlShortnerResponse getSURLFromDB(String longUrl){
-        UrlShortener urlShortner= urlShortnerRepo.findTopByOrderByIdDesc();
-        UrlShortnerResponse resResponse= new UrlShortnerResponse();
-        if(urlShortner==null){
-            String tCode=translateCode(startCode);
-            urlShortner = new UrlShortener();
-            urlShortner.setLongUrl(longUrl);
-            urlShortner.setCode(startCode);
-            urlShortner.setShortURL(tCode);
-            urlShortnerRepo.save(urlShortner);
-            resResponse.setShortUrl(tCode);
+       /* UrlShortener urlShortener1 = urlShortnerRepo.findByLongUrl(longUrl);
+        String longU = urlShortener1.getLongUrl();
+        System.out.println(longU);*/
+       /*if(longU.equals(longUrl)){
+            UrlShortnerResponse resResponse= new UrlShortnerResponse();
+            String shortURL = urlShortener1.getShortURL();
+            resResponse.setShortUrl(shortURL);
+            return resResponse;
+        }*/
+        //else {
+            UrlShortener urlShortner = urlShortnerRepo.findTopByOrderByIdDesc();
+            UrlShortnerResponse resResponse = new UrlShortnerResponse();
+            if (urlShortner == null) {
+                String tCode = translateCode(startCode);
+                urlShortner = new UrlShortener();
+                urlShortner.setLongUrl(longUrl);
+                urlShortner.setCode(startCode);
+                urlShortner.setShortURL(tCode);
+                urlShortnerRepo.save(urlShortner);
+                resResponse.setShortUrl(tCode);
 
-        }
-        else{
-            String newCode = urlShortner.getCode();
-            int newIntCode = Integer.parseInt(newCode) + 1;
-            String tCode=translateCode(String.format("%05d", newIntCode));
+            }
+        /*else if(){
             urlShortner = new UrlShortener();
-            urlShortner.setLongUrl(longUrl);
-            urlShortner.setCode(newIntCode+ "");
-            urlShortner.setShortURL(tCode);
-            urlShortnerRepo.save(urlShortner);
-            resResponse.setShortUrl(tCode);
+            urlShortner.getLongUrl();
+            urlShortner.getShortURL();
+            urlShortner.getCode();
+            urlShortner.getId();
+            resResponse.getShortUrl();
+        }*/
+            else {
+                String newCode = urlShortner.getCode();
+                int newIntCode = Integer.parseInt(newCode) + 1;
+                String tCode = translateCode(String.format("%05d", newIntCode));
+                urlShortner = new UrlShortener();
+                urlShortner.setLongUrl(longUrl);
+                urlShortner.setCode(newIntCode + "");
+                urlShortner.setShortURL(tCode);
+                urlShortnerRepo.save(urlShortner);
+                resResponse.setShortUrl(tCode);
 
-        }
-        return resResponse;
+            }
+            return resResponse;
+        //}
+
     }
 
     public UrlShortnerRequest getLongURLService(String shortURL){
@@ -59,6 +79,7 @@ public class UrlShortnerService {
         dict.put("0", "a");
         dict.put("1", "b");
         dict.put("2", "c");
+
         dict.put("3", "d");
         dict.put("4", "e");
         dict.put("5", "f");

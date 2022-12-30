@@ -1,19 +1,23 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.SignUpRequest;
+import com.example.demo.model.SignUpResponse;
 import com.example.demo.model.UrlShortnerRequest;
 import com.example.demo.model.UrlShortnerResponse;
+import com.example.demo.service.SignUpService;
 import com.example.demo.service.UrlShortnerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class UrlShortnerController {
 
     @Autowired
     UrlShortnerService urlShortnerService;
+
+    @Autowired
+    SignUpService signUpService;
     @PostMapping(value="/shorten")
     public UrlShortnerResponse shortenURL(@RequestBody UrlShortnerRequest urlShortnerRequest){
         //  System.out.println(urlShortnerRequest.toString());
@@ -24,10 +28,16 @@ public class UrlShortnerController {
         return result;
 
     }
-    @GetMapping(value="/getLongURL")
-    public UrlShortnerRequest getLongUURLRes(@RequestBody UrlShortnerResponse urlShortnerResponse){
-        UrlShortnerRequest resultLong = urlShortnerService.getLongURLService(urlShortnerResponse.getShortUrl());
+    @GetMapping(value="/long-url")
+    public UrlShortnerRequest getLongUURLRes(@RequestParam(name = "short") String shorted){
+        UrlShortnerRequest resultLong = urlShortnerService.getLongURLService(shorted);
         return resultLong;
+    }
+
+    @PostMapping(value="/signUp")
+    public SignUpResponse signUpUser(@RequestBody SignUpRequest signUpRequest){
+        SignUpResponse resultSignUp = signUpService.saveUser(signUpRequest);
+        return resultSignUp;
     }
 
 }
